@@ -1,0 +1,484 @@
+/* ---------------------------------------------------------------
+   聖誕楓景 · Christmas in Taiwan
+   --------------------------------------------------------------- */
+
+:root {
+  --pine:        #0d2a1f;
+  --pine-deep:   #071a13;
+  --pine-soft:   #16402f;
+  --snow:        #f7fbff;
+  --frost:       #cfe6f5;
+  --berry:       #c8102e;
+  --berry-deep:  #8f0b21;
+  --gold:        #ffc94d;
+  --gold-warm:   #ff9f1c;
+  --ink:         #12211b;
+  --muted:       #5b6f66;
+  --radius:      20px;
+  --shadow:      0 18px 50px rgba(4, 20, 14, .35);
+  --font-body:   "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  --font-display:"Mountains of Christmas", "Noto Sans TC", cursive;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--snow);
+  background:
+    radial-gradient(1200px 700px at 15% -10%, #1d5540 0%, transparent 60%),
+    radial-gradient(900px 600px at 95% 5%, #2b1030 0%, transparent 55%),
+    linear-gradient(180deg, var(--pine) 0%, var(--pine-deep) 55%, #0a1f2b 100%);
+  background-color: var(--pine-deep);
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- 動態飄雪畫布 ---------- */
+#snow {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 60;
+}
+
+/* ---------- 頂部燈串 ---------- */
+.lights {
+  position: relative;
+  height: 58px;
+  z-index: 55;
+}
+
+.lights__wire {
+  position: absolute;
+  top: 0; left: -2%;
+  width: 104%; height: 26px;
+  border-bottom: 3px solid rgba(10, 24, 18, .85);
+  border-radius: 0 0 50% 50%;
+}
+
+.lights__bulbs {
+  position: absolute;
+  top: 20px; left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 6px;
+}
+
+.lights__bulbs span {
+  --tint: var(--gold);
+  width: 13px; height: 19px;
+  border-radius: 50% 50% 55% 55%;
+  background: radial-gradient(circle at 35% 30%, #fff 0%, var(--tint) 45%, rgba(0,0,0,.35) 100%);
+  box-shadow: 0 0 12px 3px color-mix(in srgb, var(--tint) 70%, transparent);
+  animation: twinkle 1.9s ease-in-out infinite;
+  animation-delay: calc(var(--i) * .16s);
+  transform-origin: top center;
+}
+.lights__bulbs span:nth-child(4n+1) { --tint: var(--berry); }
+.lights__bulbs span:nth-child(4n+2) { --tint: var(--gold); }
+.lights__bulbs span:nth-child(4n+3) { --tint: #4fd1a5; }
+.lights__bulbs span:nth-child(4n+4) { --tint: #6fb7ff; }
+
+@keyframes twinkle {
+  0%, 100% { opacity: 1;    transform: scale(1);    }
+  50%      { opacity: .45;  transform: scale(.88);  }
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: clamp(48px, 9vw, 110px) 20px clamp(40px, 6vw, 70px);
+}
+
+.hero__eyebrow {
+  display: inline-block;
+  margin: 0 0 14px;
+  padding: 6px 18px;
+  font-size: .8rem;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(255, 201, 77, .45);
+  border-radius: 999px;
+  background: rgba(255, 201, 77, .08);
+}
+
+.hero__title {
+  margin: 0;
+  font-size: clamp(3rem, 12vw, 7rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: .04em;
+  background: linear-gradient(180deg, #ffffff 15%, var(--frost) 55%, #8fc7e8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, .45));
+}
+
+.hero__sub {
+  margin: 6px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 5vw, 3rem);
+  color: var(--gold);
+  text-shadow: 0 0 24px rgba(255, 201, 77, .55);
+}
+
+.hero__lead {
+  max-width: 620px;
+  margin: 26px auto 0;
+  color: rgba(247, 251, 255, .82);
+  font-size: clamp(.98rem, 2.4vw, 1.1rem);
+}
+
+.hero__actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 34px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 13px 30px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: .98rem;
+  text-decoration: none;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.btn--primary {
+  color: #3a1503;
+  background: linear-gradient(180deg, var(--gold), var(--gold-warm));
+  box-shadow: 0 10px 26px rgba(255, 159, 28, .35);
+}
+.btn--primary:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(255, 159, 28, .5); }
+
+.btn--ghost {
+  color: var(--snow);
+  border: 1px solid rgba(247, 251, 255, .35);
+  background: rgba(247, 251, 255, .06);
+}
+.btn--ghost:hover { background: rgba(247, 251, 255, .14); transform: translateY(-3px); }
+
+/* ---------- 區塊 ---------- */
+.section {
+  position: relative;
+  z-index: 2;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(44px, 7vw, 84px) 20px;
+  text-align: center;
+}
+
+.section--alt {
+  max-width: none;
+  background: rgba(255, 255, 255, .045);
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  backdrop-filter: blur(3px);
+}
+.section--alt > * { max-width: 1120px; margin-left: auto; margin-right: auto; }
+
+.section__title {
+  margin: 0;
+  font-size: clamp(1.6rem, 4.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+
+/* 標題上方的積雪 */
+.section__title { position: relative; display: inline-block; }
+.section__title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: .4em;
+  bottom: calc(100% - 3px);
+  background:
+    radial-gradient(circle 10px at 12% 100%, #fff 0 62%, transparent 66%),
+    radial-gradient(circle 13px at 33% 100%, #fff 0 62%, transparent 66%),
+    radial-gradient(circle 11px at 55% 100%, #fff 0 62%, transparent 66%),
+    radial-gradient(circle 14px at 76% 100%, #fff 0 62%, transparent 66%),
+    radial-gradient(circle 10px at 95% 100%, #fff 0 62%, transparent 66%);
+  opacity: .95;
+  pointer-events: none;
+}
+
+.section__desc {
+  margin: 16px 0 0;
+  color: rgba(247, 251, 255, .68);
+}
+
+/* ---------- 圖片卡片 ---------- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 44px;
+  text-align: left;
+}
+
+.card { margin: 0; }
+
+.card__frame {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, .16);
+  background: #000;
+  transition: transform .35s cubic-bezier(.2, .8, .3, 1), box-shadow .35s ease;
+}
+.card__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, .35);
+  pointer-events: none;
+}
+.card:hover .card__frame { transform: translateY(-8px) scale(1.015); }
+
+.card--xmas .card__frame {
+  border-color: rgba(255, 201, 77, .55);
+  box-shadow: 0 18px 50px rgba(4, 20, 14, .35), 0 0 0 4px rgba(255, 201, 77, .14);
+}
+
+.card__frame img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+
+/* 卡片角落的聖誕紅果實 */
+.card--xmas .card__frame::before {
+  content: "🎄";
+  position: absolute;
+  top: 10px; right: 14px;
+  z-index: 3;
+  font-size: 1.6rem;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, .6));
+  animation: sway 3.4s ease-in-out infinite;
+  transform-origin: top center;
+}
+@keyframes sway { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+
+.card figcaption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.tag {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+.tag--original { background: rgba(255, 255, 255, .14); color: var(--frost); }
+.tag--xmas      { background: var(--berry); color: #fff; box-shadow: 0 6px 16px rgba(200, 16, 46, .4); }
+
+.card__name { font-weight: 700; font-size: 1.05rem; }
+
+/* ---------- 比較滑桿 ---------- */
+.compare {
+  position: relative;
+  margin-top: 40px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, .18);
+  user-select: none;
+  touch-action: pan-y;
+}
+.compare img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+
+.compare__base { display: block; }
+
+.compare__top {
+  position: absolute;
+  inset: 0;
+  width: 50%;
+  overflow: hidden;
+  will-change: width;
+}
+.compare__top img {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: var(--compare-w, 100%);
+  max-width: none;
+  object-fit: cover;
+}
+
+.compare__handle {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 4;
+}
+.compare__line {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 3px;
+  background: #fff;
+  box-shadow: 0 0 14px rgba(0, 0, 0, .55);
+}
+.compare__knob {
+  position: relative;
+  padding: 9px 13px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--pine);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .45);
+  border: 3px solid var(--gold);
+}
+
+.compare__range {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  z-index: 5;
+}
+
+/* ---------- 特色 ---------- */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 44px;
+  text-align: left;
+}
+
+.feature {
+  padding: 30px 26px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .12);
+  transition: transform .3s ease, background .3s ease;
+}
+.feature:hover { transform: translateY(-6px); background: rgba(255, 255, 255, .1); }
+
+.feature__icon { font-size: 2rem; }
+
+.feature h3 {
+  margin: 14px 0 8px;
+  font-size: 1.15rem;
+  color: var(--gold);
+}
+
+.feature p { margin: 0; color: rgba(247, 251, 255, .75); font-size: .95rem; }
+
+.note {
+  max-width: 760px;
+  margin: 40px auto 0;
+  padding: 18px 22px;
+  border-radius: 14px;
+  background: rgba(7, 26, 19, .55);
+  border: 1px dashed rgba(255, 201, 77, .4);
+  color: rgba(247, 251, 255, .78);
+  font-size: .9rem;
+  text-align: left;
+}
+.note code {
+  background: rgba(255, 255, 255, .12);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-family: ui-monospace, Consolas, monospace;
+}
+
+/* ---------- 頁尾 ---------- */
+.footer {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 56px 20px 70px;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .45));
+  border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+.footer__wish {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 5vw, 2.6rem);
+  color: var(--gold);
+  text-shadow: 0 0 26px rgba(255, 201, 77, .5);
+}
+
+.footer__meta {
+  margin: 10px 0 0;
+  color: rgba(247, 251, 255, .6);
+  font-size: .9rem;
+  letter-spacing: .06em;
+}
+
+/* ---------- 進場顯示 ----------
+   只有在 JS 成功啟用時才隱藏，且設有逾時保險，
+   確保任何情況下內容最終都會顯示出來。 */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.2, .8, .3, 1);
+}
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.hero > *, .card, .feature, .compare {
+  animation: rise .8s cubic-bezier(.2, .8, .3, 1) both;
+}
+.card:nth-child(2)  { animation-delay: .12s; }
+.feature:nth-child(2){ animation-delay: .1s; }
+.feature:nth-child(3){ animation-delay: .2s; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- 響應式 ---------- */
+@media (max-width: 640px) {
+  .lights__bulbs span:nth-child(n+13) { display: none; }
+  .compare__knob { padding: 7px 10px; font-size: .7rem; }
+}
+
+/* ---------- 減少動態 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  #snow { display: none; }
+}
